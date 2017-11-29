@@ -2,13 +2,13 @@
 
 <RDF xmlns="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:em="http://www.mozilla.org/2004/em-rdf#">
     <Description about="urn:mozilla:install-manifest">
-        <em:name>Selenium Builder</em:name>
+        <em:name>GAT Builder</em:name>
         <em:description>Create automated cross-browser functional tests easily and quickly.</em:description>
         <em:developer>David Stark</em:developer>
         <em:developer>Sauce Labs</em:developer>
         <em:homepageURL>http://www.sebuilder.com</em:homepageURL>
         <em:iconURL>chrome://seleniumbuilder3/content/html/img/builder-logo.png</em:iconURL>
-        <em:id>seleniumbuilder@sebuilder.com</em:id>
+        <em:id>gatbuilder@oracle.com</em:id>
         <em:version>3.1.2</em:version>
         <em:type>2</em:type>
         <em:targetApplication>

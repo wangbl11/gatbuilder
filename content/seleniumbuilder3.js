@@ -127,7 +127,7 @@ sebuilder.boot = function() {
 };
 
 sebuilder.getInternalFile = function(path, callback) {
-  var MY_ID = "seleniumbuilder@sebuilder.com";
+  var MY_ID = "gatbuilder@oracle.com";
   // We may be on FF 4 or later
   Components.utils.import("resource://gre/modules/AddonManager.jsm");
   AddonManager.getAddonByID(MY_ID, function(addon) {
@@ -146,7 +146,7 @@ sebuilder.loadFile = function(url, success, error) {
   }
   var prefix = "chrome://seleniumbuilder3/";
   var path = "chrome/" + url.substring(prefix.length);
-  var MY_ID = "seleniumbuilder@sebuilder.com";
+  var MY_ID = "gatbuilder@oracle.com";
   var theFile = null;
   Components.utils.import("resource://gre/modules/AddonManager.jsm");
   AddonManager.getAddonByID(MY_ID, function(addon) {
