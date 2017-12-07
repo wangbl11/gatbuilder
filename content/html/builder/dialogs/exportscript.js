@@ -127,6 +127,14 @@ builder.dialogs.exportscript.saveAs = function() {
   });
 };
 
-
+builder.dialogs.exportscript.saveDefault = function() {
+  var script = builder.getScript();
+  builder.selenium2.io.saveScript(script, builder.selenium2.io.formats[0], builder.gatprefs.scriptFile, function(success) {
+    if (success) {
+      builder.suite.setCurrentScriptSaveRequired(false);
+      builder.gui.suite.update();
+    }
+  });
+};
 
 if (builder && builder.loader && builder.loader.loadNextMainScript) { builder.loader.loadNextMainScript(); }

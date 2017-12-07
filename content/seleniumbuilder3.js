@@ -363,5 +363,36 @@ sebuilder.SeFileUtils = {
       i++;
     }
     return result;
+  },
+  getFileSeperator:function (localFile) {
+        if (Components.interfaces.nsILocalFileWin && localFile instanceof Components.interfaces.nsILocalFileWin) {
+            return '\\';
+        }
+        return '/';
+  },
+  appendRelativePath: function (file, relativePath) {
+        var up = 0;
+        var cleanPath = [];
+        var fileSep = this.getFileSeperator(file);
+        var relPath = relativePath.split(fileSep);
+        while (relPath.length > 0) {
+            var f = relPath.shift();
+            if (f == '..') {
+                if (cleanPath.length > 0) {
+                    cleanPath.pop();
+                }else {
+                    up++;
+                }
+            }else if (f != '.') {
+                cleanPath.push(f);
+            }
+        }
+        while (up-- > 0 && file.parent) {
+
+            file = file.parent;
+        }
+        var mergedFile = this.getFile(file.path);
+        mergedFile.appendRelativePath(cleanPath.join(fileSep));
+        return mergedFile;
   }
 };

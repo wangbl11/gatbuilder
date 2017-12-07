@@ -5,6 +5,7 @@ builder.loader = {};
 
 builder.loader.ds = Components.classes["@mozilla.org/file/directory_service;1"].getService(Components.interfaces.nsIProperties);
 builder.loader.ios = Components.classes["@mozilla.org/network/io-service;1"].getService(Components.interfaces.nsIIOService);
+builder.loader.prefs = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefBranch);
 
 builder.loader.showProgressBar = function() {
   document.getElementById('booting-done').style.display = 'block';
@@ -171,6 +172,7 @@ builder.loader.mainScripts = [
   "builder/selenium2/io/formats/csharp_new.js",
   "builder/selenium2/io/formats/csharp_new_nunit.js",
   "builder/selenium2/io/formats/english.js",
+  "builder/gatprefs.js",
   "builder/locator.js",
   "builder/suite.js",
   "builder/stepdisplay.js",

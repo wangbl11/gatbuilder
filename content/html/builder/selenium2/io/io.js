@@ -85,6 +85,9 @@ builder.selenium2.io.saveScript = function(script, format, path, callback) {
     callback(builder.selenium2.io.saveScriptWithParams(script, format, path, {}));
   }
 };
+builder.selenium2.io.saveDefaultScript = function(script, format, path, callback) {
+    callback(builder.selenium2.io.saveScriptWithParams(script, format, path, {"relative":true}));
+};
 
 builder.selenium2.io.saveScriptWithParams = function(script, format, path, params) {
   try {
@@ -96,7 +99,10 @@ builder.selenium2.io.saveScriptWithParams = function(script, format, path, param
           function(fp) { return fp.file; },
           format.extension);
     } else {
-      file = sebuilder.SeFileUtils.getFile(path);
+    	if (params['relative'])
+          file = sebuilder.SeFileUtils.getFile(path);
+        else
+          file=  sebuilder.SeFileUtils.appendRelativePath(builder.gatprefs.defHomeFolder,path);
     }
     if (file != null) {
       var outputStream = Components.classes["@mozilla.org/network/file-output-stream;1"].

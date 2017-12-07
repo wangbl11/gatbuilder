@@ -16,7 +16,7 @@ builder.locator.methods = {
   name:       {toString: function() { return "name"; }},
   link:       {toString: function() { return "link"; }},
   css:        {toString: function() { return "css"; }},
-  xpath:      {toString: function() { return "xpath"; }},
+  xpath:      {toString: function() { return "xpath"; }}
 };
 
 builder.locator.methods.id[builder.selenium2] = "id";
@@ -24,6 +24,9 @@ builder.locator.methods.name[builder.selenium2] = "name";
 builder.locator.methods.link[builder.selenium2] = "link text";
 builder.locator.methods.css[builder.selenium2] = "css selector";
 builder.locator.methods.xpath[builder.selenium2] = "xpath";
+
+//polygon:    {toString: function() { return "polygon"; }}
+//builder.locator.methods.polygon[builder.selenium2] = "polygon";
 
 builder.locator.methodForName = function(seleniumVersion, name) {
   for (var k in builder.locator.methods) {
@@ -37,6 +40,46 @@ builder.locator.methodForName = function(seleniumVersion, name) {
 builder.locator.locateElement = function(window, type, value) {
   return builder.locator['locateElementBy' + builder.locator.capitalize(type.toString())](window, value);
 };
+
+/*
+builder.locator.locateElementByPolygon=function(e) {
+  var path = '';
+  var current = e;
+  var idx=-1;
+  var svg=null;
+  var _ret=null;
+  if (e.nodeName == 'polygon') {
+    idx=this.getNodeNbr(current);
+    if (idx<1) return null;
+     while (current != null) {
+  	   if (current.parentNode != null) {
+  	  	   if (current.parentNode.nodeName=='svg'){
+  	  	    svg=current.parentNode;
+  	  	    break;
+  	  	   }
+  	   }
+  	   current = current.parentNode;
+     }
+     if (svg==null) return null;
+     current=svg;
+     while (current != null) {
+  	    if (current.parentNode != null) {
+  	  	  if (1 == current.parentNode.nodeType && // ELEMENT_NODE
+          current.parentNode.getAttribute("id")){
+          	   _ret="//*[@id='"+current.parentNode.getAttribute("id")+"']//*[name()='svg']//*[name()='polygon']["+(idx+1)+"]";
+          	   //alert(_ret);
+          	   return _ret;
+          }
+  	    }
+  	    current = current.parentNode;
+     }
+     if (_ret==null) return null;
+     return _ret;
+  }else
+  return null;
+  
+};
+*/
 
 builder.locator.locateElementById = function(window, id) {
   return window.document.getElementById(id);
@@ -211,11 +254,14 @@ builder.locator.fromElement = function(element, applyTextTransforms) {
   
   // Locate by ID
   var id = element.getAttribute('id');
+  
   if (id) {
-    values[builder.locator.methods.id] = [id];
-    values[builder.locator.methods.css] = ["#" + id];
-    if (findNode("id", id) === element) {
-      preferredMethod = builder.locator.methods.id;
+  	if (validIDs(id)){
+      values[builder.locator.methods.id] = [id];
+      values[builder.locator.methods.css] = ["#" + id];
+      if (findNode("id", id) === element) {
+        preferredMethod = builder.locator.methods.id;
+      }
     }
   }
   
@@ -225,6 +271,17 @@ builder.locator.fromElement = function(element, applyTextTransforms) {
     values[builder.locator.methods.name] = [name];
     if (!preferredMethod && findNode("name", name) === element) {
       preferredMethod = builder.locator.methods.name;
+    }
+  }
+  
+  // Locate by id
+  if (id) {
+  	if (isDynamicID(id)==false&&notRecordIDs(id)==false){
+      values[builder.locator.methods.id] = [id];
+      values[builder.locator.methods.css] = ["#" + id];
+      if (!preferredMethod &&findNode("id", id) === element) {
+        preferredMethod = builder.locator.methods.id;
+      }
     }
   }
   
@@ -486,4 +543,28 @@ function getCorrectCaseText(el, style) {
   return bits.join("");
 }
 
+function isDynamicID(val){
+	var arr=builder.gatprefs.DEFAULT_OPTIONS['dynamicIDPatterns'];
+	var len=arr.length;
+	for (var i=0;i<len;i++){
+		if (val.match(arr[i])) return true;
+	}
+	return false;
+}
+function notRecordIDs(val){
+	var arr=builder.gatprefs.DEFAULT_OPTIONS['notRecordIds'];
+	var len=arr.length;
+	for (var i=0;i<len;i++){
+		if (val.match(arr[i])) return true;
+	}
+	return false;
+}
+function validIDs(val){
+	var arr=builder.gatprefs.DEFAULT_OPTIONS['validIDPatterns'];
+	var len=arr.length;
+	for (var i=0;i<len;i++){
+		if (val.match(arr[i])) return true;
+	}
+	return false;
+}
 if (builder && builder.loader && builder.loader.loadNextMainScript) { builder.loader.loadNextMainScript(); }

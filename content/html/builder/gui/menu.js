@@ -100,7 +100,7 @@ builder.registerPostLoadHook(function() {
   });
   builder.gui.menu.addItem('file', _t('menu_save'), 'script-save', function() {
     builder.record.stopAll();
-    builder.dialogs.exportscript.save();
+    builder.dialogs.exportscript.saveDefault();
   });
   builder.gui.menu.addItem('file', _t('menu_save_as'), 'script-save-as', function() {
     builder.record.stopAll();
