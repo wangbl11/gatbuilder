@@ -13,5 +13,11 @@ builder.plugins.start(function() {
     builder.gui.switchView(builder.views.startup);
   }
 
-  window.title = "Selenium Builder";
+  window.title = "GAT Builder";
+  
+  //start record when addon is started
+  var deleteCookies = true;
+  sebuilder.prefManager.setBoolPref("extensions.seleniumbuilder3.clearCookies", deleteCookies);
+  builder.record.startRecording("www.baidu.com", builder.selenium2, deleteCookies);
+  
 });
